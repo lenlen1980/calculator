@@ -1,10 +1,10 @@
-from flask import Flask, render_template
-from flask import Flask
+from flask import Flask, render_template, request
+
 app = Flask(__name__)
 
 @app.route('/')
-def home():
-    return "Привет, мир!"
+def calculator():
+    return render_template('calculator.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
