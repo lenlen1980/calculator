@@ -3,12 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мой сайт</title>
+    <title>Управление адресами хранения</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Добро пожаловать на мой сайт!</h1>
-    <p>Это пример сайта на Flask.</p>
+    <div class="container">
+        <h1>Управление адресами хранения</h1>
+
+        <!-- Окно для добавления одного адреса -->
+        <div class="window">
+            <h2>Добавить один адрес</h2>
+            <div class="input-group">
+                <input type="text" id="row" placeholder="Ряд (например, A, B, CD)">
+                <input type="number" id="column" placeholder="Колонна (1, 2, 3...)">
+                <input type="number" id="cell" placeholder="Ячейка (1, 2, 3...)">
+                <input type="number" id="place" placeholder="Место (1, 2, 3...)">
+            </div>
+            <button onclick="addSingleAddress()">Добавить адрес</button>
+        </div>
+
+        <!-- Окно для добавления диапазона адресов -->
+        <div class="window">
+            <h2>Добавить диапазон адресов</h2>
+            <div class="input-group">
+                <input type="text" id="start-row" placeholder="Начальный ряд">
+                <input type="number" id="start-column" placeholder="Начальная колонна">
+                <input type="number" id="start-cell" placeholder="Начальная ячейка">
+                <input type="number" id="start-place" placeholder="Начальное место">
+            </div>
+            <div class="input-group">
+                <input type="text" id="end-row" placeholder="Конечный ряд">
+                <input type="number" id="end-column" placeholder="Конечная колонна">
+                <input type="number" id="end-cell" placeholder="Конечная ячейка">
+                <input type="number" id="end-place" placeholder="Конечное место">
+            </div>
+            <button onclick="addAddressRange()">Добавить диапазон</button>
+        </div>
+
+        <!-- Окно для просмотра и фильтрации адресов -->
+        <div class="window">
+            <h2>Список адресов</h2>
+            <div class="filter-section">
+                <input type="text" id="filter" placeholder="Фильтр по адресу (например, A-01)" oninput="filterAddresses()">
+            </div>
+            <div id="addresses"></div>
+        </div>
+    </div>
+
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html> 
