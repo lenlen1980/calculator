@@ -6,17 +6,23 @@ let selectedPlace = null;
 
 // Инициализация выпадающих списков
 document.addEventListener('DOMContentLoaded', () => {
-    initDropdown('rowDropdown', generateLetters('A', 'Z'), 'row');
+    initDropdown('rowDropdown', generateLetters('A', 'ZZ'), 'row');
     initDropdown('columnDropdown', generateNumbers(1, 99), 'column');
     initDropdown('cellDropdown', generateNumbers(1, 99), 'cell');
     initDropdown('placeDropdown', generateNumbers(1, 99), 'place');
 });
 
-// Генерация букв от A до Z
+// Генерация букв от A до ZZ
 function generateLetters(start, end) {
     const letters = [];
     for (let i = start.charCodeAt(0); i <= end.charCodeAt(0); i++) {
         letters.push(String.fromCharCode(i));
+    }
+    // Добавляем двойные буквы (AA-ZZ)
+    for (let i = start.charCodeAt(0); i <= end.charCodeAt(0); i++) {
+        for (let j = start.charCodeAt(0); j <= end.charCodeAt(0); j++) {
+            letters.push(String.fromCharCode(i) + String.fromCharCode(j));
+        }
     }
     return letters;
 }
