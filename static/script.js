@@ -363,20 +363,89 @@ function addCustomRange() {
         return;
     }
 
-    // Формируем строку диапазона
-    const rangeString = `${startValue} - ${endValue}`;
+    // Разбиваем начальный и конечный адреса на части
+    const [startRow, startCol, startCell, startPlace] = startValue.split('-');
+    const [endRow, endCol, endCell, endPlace] = endValue.split('-');
 
-    // Проверяем, чтобы диапазон не был уже добавлен
-    const existingItem = Array.from(selectedList.children).find(el => el.textContent === rangeString);
-    if (!existingItem) {
-        const div = document.createElement('div');
-        div.textContent = rangeString; // Отображаем диапазон
-        selectedList.appendChild(div); // Добавляем в список
-    }
+    // Генерация всех адресов в диапазоне
+    const allAddresses = generateAddressRange(startRow, endRow, startCol, endCol, startCell, endCell, startPlace, endPlace);
+
+    // Добавляем все адреса в список
+    allAddresses.forEach(address => {
+        const existingItem = Array.from(selectedList.children).find(el => el.textContent === address);
+        if (!existingItem) {
+            const div = document.createElement('div');
+            div.textContent = address; // Отображаем адрес
+            selectedList.appendChild(div); // Добавляем в список
+        }
+    });
 
     // Очищаем поля ввода
     startInput.value = '';
     endInput.value = '';
+}
+
+// Генерация всех адресов в диапазоне
+function generateAddressRange(startRow, endRow, startCol, endCol, startCell, endCell, startPlace, endPlace) {
+    const addresses = [];
+
+    // Генерация рядов
+    const rows = generateRange(startRow, endRow, true);
+    // Генерация колонн, ячеек и мест
+    const cols = generateRange(startCol, endCol, false);
+    const cells = generateRange(startCell, endCell, false);
+    const places = generateRange(startPlace, endPlace, false);
+
+    // Формируем все возможные комбинации
+    rows.forEach(row => {
+        cols.forEach(col => {
+            cells.forEach(cell => {
+                places.forEach(place => {
+                    addresses.push(`${row}-${col}-${cell}-${place}`);
+                });
+            });
+        });
+    });
+
+    return addresses;
+}
+
+// Генерация диапазона (для рядов и чисел)
+function generateRange(start, end, isLetter) {
+    const range = [];
+    let current = start;
+
+    while (current <= end) {
+        range.push(current);
+        current = isLetter ? incrementLetter(current) : incrementNumber(current);
+    }
+
+    return range;
+}
+
+// Увеличение буквенного значения (A -> B, Z -> AA, AZ -> BA)
+function incrementLetter(letter) {
+    let result = '';
+    let carry = 1;
+
+    for (let i = letter.length - 1; i >= 0; i--) {
+        let charCode = letter.charCodeAt(i) + carry;
+        if (charCode > 90) { // Z -> AA
+            charCode = 65; // A
+            carry = 1;
+        } else {
+            carry = 0;
+        }
+        result = String.fromCharCode(charCode) + result;
+    }
+
+    if (carry) result = 'A' + result; // Если был перенос (ZZ -> AAA)
+    return result;
+}
+
+// Увеличение числового значения (01 -> 02, 99 -> 100)
+function incrementNumber(num) {
+    return String(Number(num) + 1).padStart(2, '0');
 }
 
 // Проверка формата диапазона

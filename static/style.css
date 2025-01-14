@@ -265,6 +265,8 @@ button:hover {
     border: 1px solid #ccc;
     border-radius: 4px;
     background-color: #f9f9f9;
+    max-height: 300px;
+    overflow-y: auto;
 }
 
 #selectedRangeList div {
