@@ -111,8 +111,77 @@ function updateSelectedAddresses() {
 
 // Переключение видимости выпадающего списка
 function toggleDropdown(dropdownId) {
+    const dropdowns = document.querySelectorAll('.dropdown');
+    dropdowns.forEach(dropdown => {
+        if (dropdown.id !== dropdownId) {
+            dropdown.style.display = 'none'; // Закрываем другие списки
+        }
+    });
+
     const dropdown = document.getElementById(dropdownId);
     if (dropdown) {
         dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        if (dropdown.style.display === 'block') {
+            // Позиционирование списка рядом с кнопкой
+            const button = document.querySelector(`button[onclick="toggleDropdown('${dropdownId}')"]`);
+            if (button) {
+                const rect = button.getBoundingClientRect();
+                dropdown.style.position = 'absolute';
+                dropdown.style.top = `${rect.bottom + window.scrollY}px`;
+                dropdown.style.left = `${rect.left + window.scrollX}px`;
+            }
+
+            // Плавное появление
+            dropdown.style.opacity = '0';
+            dropdown.style.transform = 'translateY(-10px)';
+            setTimeout(() => {
+                dropdown.style.opacity = '1';
+                dropdown.style.transform = 'translateY(0)';
+            }, 10);
+        }
     }
+}
+
+// Обработка ручного ввода с фильтрацией
+function handleManualInput(type) {
+    const inputId = `${type}Input`;
+    const dropdownId = `${type}Dropdown`;
+    const inputValue = document.getElementById(inputId).value.trim().toUpperCase();
+
+    // Фильтрация элементов списка
+    const dropdown = document.getElementById(dropdownId);
+    if (dropdown) {
+        const labels = dropdown.querySelectorAll('label');
+        labels.forEach(label => {
+            const text = label.textContent.trim().toUpperCase();
+            if (text.includes(inputValue)) {
+                label.style.display = 'block';
+            } else {
+                label.style.display = 'none';
+            }
+        });
+    }
+
+    // Обновление выбранного значения
+    switch (type) {
+        case 'row':
+            selectedRow = inputValue ? inputValue : null;
+            updateButtonText('rowDropdown', selectedRow, 'Ряды');
+            break;
+        case 'column':
+            selectedColumn = inputValue ? inputValue : null;
+            updateButtonText('columnDropdown', selectedColumn, 'Колонны');
+            break;
+        case 'cell':
+            selectedCell = inputValue ? inputValue : null;
+            updateButtonText('cellDropdown', selectedCell, 'Ячейки');
+            break;
+        case 'place':
+            selectedPlace = inputValue ? inputValue : null;
+            updateButtonText('placeDropdown', selectedPlace, 'Места');
+            break;
+    }
+
+    // Обновляем отображение выбранного адреса
+    updateSelectedAddresses();
 } 
