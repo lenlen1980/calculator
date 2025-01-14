@@ -37,17 +37,10 @@ function initDropdown(dropdownId, items, type) {
 
     dropdown.innerHTML = items.map(item => `
         <label>
-            <input type="checkbox" class="dropdown-checkbox" data-type="${type}" value="${item}">
+            <input type="checkbox" class="dropdown-checkbox" data-type="${type}" value="${item}" onclick="handleSelection(this, '${type}')">
             ${item}
         </label>
     `).join('');
-
-    // Обработка выбора
-    dropdown.addEventListener('change', (event) => {
-        if (event.target.classList.contains('dropdown-checkbox')) {
-            handleSelection(event.target, type);
-        }
-    });
 }
 
 // Обработка выбора

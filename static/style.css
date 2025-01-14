@@ -170,26 +170,29 @@ button:hover {
 
 .button-group button {
     padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
+    background-color: #444; /* Темный фон кнопок */
+    color: white; /* Белый текст */
+    border: 2px solid #ff5722; /* Яркая окантовка */
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .button-group button:hover {
-    background-color: #0056b3;
+    background-color: #ff5722; /* Подсветка при наведении */
 }
 
 .dropdown {
     display: none;
     position: absolute;
-    background-color: white;
-    border: 1px solid #ddd;
+    background-color: #333; /* Темный фон */
+    border: 2px solid #ff5722; /* Яркая оранжевая окантовка */
+    border-radius: 5px;
     padding: 10px;
     max-height: 300px;
     overflow-y: auto;
     z-index: 1000;
+    color: white; /* Белые буквы */
 }
 
 .dropdown label {
@@ -200,16 +203,18 @@ button:hover {
 
 .dropdown-checkbox {
     margin-right: 10px;
+    accent-color: #ff5722; /* Цвет чекбокса */
 }
 
 #selectedAddresses {
     margin-top: 20px;
+    color: white; /* Белый текст */
 }
 
 .selected-address {
     padding: 10px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
+    background-color: #444; /* Темный фон */
+    border: 2px solid #ff5722; /* Яркая окантовка */
     border-radius: 5px;
     margin-bottom: 10px;
 }
