@@ -362,3 +362,28 @@ button:hover {
         line-height: 18px;
     }
 }
+
+/* Стили для кнопки "Очистить список" */
+.clear-button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+
+.clear-button:hover {
+    background-color: #ff1a1a; /* Эффект при наведении */
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 600px) {
+    .clear-button {
+        width: 100%;
+        font-size: 12px;
+    }
+}

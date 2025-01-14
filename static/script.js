@@ -464,7 +464,7 @@ function addAddressToList(address) {
         const div = document.createElement('div');
         div.textContent = address; // Отображаем адрес
 
-        // Добавляем кнопку удаления
+        // Добавляем кнопку удаления (крестик)
         const removeButton = document.createElement('button');
         removeButton.textContent = '×';
         removeButton.className = 'remove-button';
@@ -477,3 +477,9 @@ function addAddressToList(address) {
 
 // Пример использования
 addAddressToList('P-01-01-01'); 
+
+// Очистка всех адресов
+function clearAllAddresses() {
+    const selectedList = document.getElementById('selectedRangeList');
+    selectedList.innerHTML = ''; // Удаляем все элементы из списка
+} 
