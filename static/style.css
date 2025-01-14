@@ -183,28 +183,51 @@ button:hover {
     background-color: #ff5722; /* Подсветка при наведении */
 }
 
+/* Стили для выпадающих списков */
 .dropdown {
     display: none;
     position: absolute;
-    background-color: #333; /* Темный фон */
-    border: 2px solid #ff5722; /* Яркая оранжевая окантовка */
+    background-color: #333;
+    border: 2px solid #ff5722;
     border-radius: 5px;
     padding: 10px;
-    max-height: 300px;
-    overflow-y: auto;
+    max-height: 200px;
+    overflow-x: auto; /* Горизонтальная прокрутка */
+    overflow-y: hidden; /* Отключаем вертикальную прокрутку */
     z-index: 1000;
-    color: white; /* Белые буквы */
+    white-space: nowrap; /* Запрет переноса элементов на новую строку */
+    min-width: 200px; /* Минимальная ширина подложки */
+    width: 80%; /* Ширина подложки зависит от ширины экрана */
+    max-width: 600px; /* Максимальная ширина подложки */
 }
 
-.dropdown label {
-    display: block;
-    margin: 5px 0;
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .dropdown {
+        width: 90%; /* Ширина подложки на мобильных устройствах */
+        max-width: 100%; /* Максимальная ширина на мобильных */
+    }
+}
+
+/* Стили для элементов списка */
+.dropdown span {
+    display: inline-block; /* Элементы в строку */
+    margin: 5px;
+    padding: 8px 12px;
+    border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.2s ease;
+    background-color: #444;
+    color: white;
 }
 
-.dropdown-checkbox {
-    margin-right: 10px;
-    accent-color: #ff5722; /* Цвет чекбокса */
+.dropdown span:hover {
+    background-color: #ff5722; /* Подсветка при наведении */
+}
+
+/* Стили для выбранных элементов */
+.dropdown span.selected {
+    background-color: #ff5722; /* Подсветка выбранного элемента */
 }
 
 #selectedAddresses {

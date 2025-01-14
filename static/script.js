@@ -142,6 +142,21 @@ function toggleDropdown(dropdownId) {
     }
 }
 
+// Обработка выбора элемента
+function handleItemClick(dropdownId, item) {
+    const dropdown = document.getElementById(dropdownId);
+    if (dropdown) {
+        const items = dropdown.querySelectorAll('span');
+        items.forEach(el => {
+            if (el === item) {
+                el.classList.toggle('selected'); // Выделяем выбранный элемент
+            } else {
+                el.classList.remove('selected'); // Снимаем выделение с других элементов
+            }
+        });
+    }
+}
+
 // Обработка ручного ввода с фильтрацией
 function handleManualInput(type) {
     const inputId = `${type}Input`;
