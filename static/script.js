@@ -452,4 +452,28 @@ function incrementNumber(num) {
 function isValidRangeFormat(value) {
     const regex = /^[A-Z]{1,2}-\d{2}-\d{2}-\d{2}$/;
     return regex.test(value);
-} 
+}
+
+// Добавление адреса в список
+function addAddressToList(address) {
+    const selectedList = document.getElementById('selectedRangeList');
+
+    // Проверяем, чтобы адрес не был уже добавлен
+    const existingItem = Array.from(selectedList.children).find(el => el.textContent === address);
+    if (!existingItem) {
+        const div = document.createElement('div');
+        div.textContent = address; // Отображаем адрес
+
+        // Добавляем кнопку удаления
+        const removeButton = document.createElement('button');
+        removeButton.textContent = '×';
+        removeButton.className = 'remove-button';
+        removeButton.onclick = () => div.remove(); // Удаляем элемент при клике
+
+        div.appendChild(removeButton); // Добавляем кнопку в элемент
+        selectedList.appendChild(div); // Добавляем в список
+    }
+}
+
+// Пример использования
+addAddressToList('P-01-01-01'); 

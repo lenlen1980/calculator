@@ -267,16 +267,38 @@ button:hover {
     background-color: #f9f9f9;
     max-height: 300px;
     overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Автоматическое выравнивание по ширине */
+    gap: 8px; /* Расстояние между элементами */
 }
 
 #selectedRangeList div {
     padding: 8px;
-    margin: 4px 0;
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 4px;
     color: #333;
     font-family: monospace; /* Для лучшего отображения формата */
+    text-align: center;
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Легкая тень */
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+#selectedRangeList div:hover {
+    background-color: #f0f0f0; /* Эффект при наведении */
+    transform: translateY(-2px); /* Легкий подъем */
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 600px) {
+    #selectedRangeList {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Уменьшаем ширину элементов */
+    }
+
+    #selectedRangeList div {
+        font-size: 12px; /* Уменьшаем размер шрифта */
+    }
 }
 
 /* Стили для выпадающих списков диапазонов */
@@ -308,4 +330,35 @@ button:hover {
 .dropdown-range span.selected {
     background-color: #ff5722;
     color: white;
+}
+
+/* Стили для кнопки удаления */
+.remove-button {
+    margin-left: 8px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 20px;
+    text-align: center;
+    padding: 0;
+    transition: background-color 0.2s ease;
+}
+
+.remove-button:hover {
+    background-color: #ff1a1a; /* Эффект при наведении */
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 600px) {
+    .remove-button {
+        width: 18px;
+        height: 18px;
+        font-size: 10px;
+        line-height: 18px;
+    }
 }
