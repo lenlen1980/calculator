@@ -482,4 +482,102 @@ addAddressToList('P-01-01-01');
 function clearAllAddresses() {
     const selectedList = document.getElementById('selectedRangeList');
     selectedList.innerHTML = ''; // Удаляем все элементы из списка
-} 
+}
+
+// Генерация всех комбинаций адресов
+function generateAllAddresses(rows, columns, cells, places) {
+    const addresses = [];
+
+    rows.forEach(row => {
+        columns.forEach(column => {
+            cells.forEach(cell => {
+                places.forEach(place => {
+                    // Формируем адрес в формате PP-56-54-76
+                    const address = `${row}-${column.padStart(2, '0')}-${cell.padStart(2, '0')}-${place.padStart(2, '0')}`;
+                    addresses.push(address);
+                });
+            });
+        });
+    });
+
+    return addresses;
+}
+
+// Обработка добавления адресов
+function addAddressesFromSelection() {
+    // Получаем выбранные значения
+    const selectedRows = Array.from(document.querySelectorAll('#rowRangeDropdown input'))
+        .map(input => input.value.toUpperCase())
+        .filter(value => isValidRow(value));
+
+    const selectedColumns = Array.from(document.querySelectorAll('#columnRangeDropdown input'))
+        .map(input => input.value.padStart(2, '0'))
+        .filter(value => isValidNumber(value));
+
+    const selectedCells = Array.from(document.querySelectorAll('#cellRangeDropdown input'))
+        .map(input => input.value.padStart(2, '0'))
+        .filter(value => isValidNumber(value));
+
+    const selectedPlaces = Array.from(document.querySelectorAll('#placeRangeDropdown input'))
+        .map(input => input.value.padStart(2, '0'))
+        .filter(value => isValidNumber(value));
+
+    // Генерируем все комбинации
+    const allAddresses = generateAllAddresses(selectedRows, selectedColumns, selectedCells, selectedPlaces);
+
+    // Добавляем адреса в список
+    allAddresses.forEach(address => {
+        addAddressToList(address);
+    });
+}
+
+// Пример использования
+addAddressesFromSelection(); 
+
+// Разбиение сложного адреса на отдельные адреса
+function splitComplexAddress(complexAddress) {
+    const parts = complexAddress.split('-');
+    if (parts.length !== 8) {
+        return []; // Некорректный формат
+    }
+
+    const [row1, row2, col1, col2, cell1, cell2, place1, place2] = parts;
+
+    // Генерация всех комбинаций
+    const addresses = [];
+    const rows = [row1, row2];
+    const columns = [col1, col2];
+    const cells = [cell1, cell2];
+    const places = [place1, place2];
+
+    rows.forEach(row => {
+        columns.forEach(column => {
+            cells.forEach(cell => {
+                places.forEach(place => {
+                    const address = `${row}-${column.padStart(2, '0')}-${cell.padStart(2, '0')}-${place.padStart(2, '0')}`;
+                    addresses.push(address);
+                });
+            });
+        });
+    });
+
+    return addresses;
+}
+
+// Обработка добавления адресов
+function addComplexAddress(complexAddress) {
+    const addresses = splitComplexAddress(complexAddress);
+
+    if (addresses.length === 0) {
+        alert('Некорректный формат адреса. Используйте формат B-D-3-4-4-5-3-4.');
+        return;
+    }
+
+    // Добавляем все адреса в список
+    addresses.forEach(address => {
+        addAddressToList(address);
+    });
+}
+
+// Пример использования
+addComplexAddress('B-D-3-4-4-5-3-4'); // Преобразуется в B-3-4-3, B-3-5-4, B-4-4-3, B-4-5-4, D-3-4-3, D-3-5-4, D-4-4-3, D-4-5-4 
