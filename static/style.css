@@ -161,3 +161,55 @@ button:hover {
     gap: 8px; /* Уменьшаем отступы для мобильных */
   }
 }
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.button-group button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button-group button:hover {
+    background-color: #0056b3;
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.dropdown label {
+    display: block;
+    margin: 5px 0;
+    cursor: pointer;
+}
+
+.dropdown-checkbox {
+    margin-right: 10px;
+}
+
+#selectedAddresses {
+    margin-top: 20px;
+}
+
+.selected-address {
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}

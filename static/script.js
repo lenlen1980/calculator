@@ -1,79 +1,94 @@
-// Добавление одного адреса
-async function addSingleAddress() {
-    const row = document.getElementById('row').value.trim().toUpperCase();
-    const column = document.getElementById('column').value;
-    const cell = document.getElementById('cell').value;
-    const place = document.getElementById('place').value;
+// Глобальные переменные для хранения выбранных значений
+let selectedRow = null;
+let selectedColumn = null;
+let selectedCell = null;
+let selectedPlace = null;
 
-    if (!row || !column || !cell || !place) {
-        alert("Заполните все поля!");
-        return;
+// Инициализация выпадающих списков
+document.addEventListener('DOMContentLoaded', () => {
+    initDropdown('rowDropdown', generateLetters('A', 'Z'), 'row');
+    initDropdown('columnDropdown', generateNumbers(1, 99), 'column');
+    initDropdown('cellDropdown', generateNumbers(1, 99), 'cell');
+    initDropdown('placeDropdown', generateNumbers(1, 99), 'place');
+});
+
+// Генерация букв от A до Z
+function generateLetters(start, end) {
+    const letters = [];
+    for (let i = start.charCodeAt(0); i <= end.charCodeAt(0); i++) {
+        letters.push(String.fromCharCode(i));
     }
-
-    const address = `${row}-${column.padStart(2, '0')}-${cell.padStart(2, '0')}-${place.padStart(2, '0')}`;
-
-    const response = await fetch('/add_address', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ address })
-    });
-
-    const result = await response.json();
-    alert(result.message);
-    if (result.status === "success") {
-        loadAddresses();
-    }
+    return letters;
 }
 
-// Добавление диапазона адресов
-async function addAddressRange() {
-    const startRow = document.getElementById('start-row').value.trim().toUpperCase();
-    const startColumn = document.getElementById('start-column').value;
-    const startCell = document.getElementById('start-cell').value;
-    const startPlace = document.getElementById('start-place').value;
-
-    const endRow = document.getElementById('end-row').value.trim().toUpperCase();
-    const endColumn = document.getElementById('end-column').value;
-    const endCell = document.getElementById('end-cell').value;
-    const endPlace = document.getElementById('end-place').value;
-
-    if (!startRow || !startColumn || !startCell || !startPlace || !endRow || !endColumn || !endCell || !endPlace) {
-        alert("Заполните все поля!");
-        return;
+// Генерация чисел от start до end
+function generateNumbers(start, end) {
+    const numbers = [];
+    for (let i = start; i <= end; i++) {
+        numbers.push(i);
     }
-
-    const start = `${startRow}-${startColumn.padStart(2, '0')}-${startCell.padStart(2, '0')}-${startPlace.padStart(2, '0')}`;
-    const end = `${endRow}-${endColumn.padStart(2, '0')}-${endCell.padStart(2, '0')}-${endPlace.padStart(2, '0')}`;
-
-    const response = await fetch('/add_range', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ start, end })
-    });
-
-    const result = await response.json();
-    alert(result.message);
-    if (result.status === "success") {
-        loadAddresses();
-    }
+    return numbers;
 }
 
-// Загрузка адресов
-async function loadAddresses() {
-    const filter = document.getElementById('filter').value.trim().toUpperCase();
-    const response = await fetch(`/get_addresses?filter=${filter}`);
-    const result = await response.json();
+// Инициализация выпадающего списка
+function initDropdown(dropdownId, items, type) {
+    const dropdown = document.getElementById(dropdownId);
+    if (!dropdown) return;
 
-    const addressesDiv = document.getElementById('addresses');
-    addressesDiv.innerHTML = result.addresses.map(addr => `
-        <div class="address-card">${addr}</div>
+    dropdown.innerHTML = items.map(item => `
+        <label>
+            <input type="checkbox" class="dropdown-checkbox" data-type="${type}" value="${item}">
+            ${item}
+        </label>
     `).join('');
+
+    // Обработка выбора
+    dropdown.addEventListener('change', (event) => {
+        if (event.target.classList.contains('dropdown-checkbox')) {
+            handleSelection(event.target, type);
+        }
+    });
 }
 
-// Фильтрация адресов
-function filterAddresses() {
-    loadAddresses();
+// Обработка выбора
+function handleSelection(checkbox, type) {
+    const value = checkbox.value;
+
+    switch (type) {
+        case 'row':
+            selectedRow = checkbox.checked ? value : null;
+            break;
+        case 'column':
+            selectedColumn = checkbox.checked ? value : null;
+            break;
+        case 'cell':
+            selectedCell = checkbox.checked ? value : null;
+            break;
+        case 'place':
+            selectedPlace = checkbox.checked ? value : null;
+            break;
+    }
+
+    updateSelectedAddresses();
 }
 
-// Инициализация
-document.addEventListener('DOMContentLoaded', loadAddresses); 
+// Обновление выбранных адресов
+function updateSelectedAddresses() {
+    const selectedList = document.getElementById('selectedList');
+    if (!selectedList) return;
+
+    if (selectedRow && selectedColumn && selectedCell && selectedPlace) {
+        const address = `${selectedRow}-${selectedColumn}-${selectedCell}-${selectedPlace}`;
+        selectedList.innerHTML = `<div class="selected-address">${address}</div>`;
+    } else {
+        selectedList.innerHTML = '<div class="selected-address">Выберите все параметры.</div>';
+    }
+}
+
+// Переключение видимости выпадающего списка
+function toggleDropdown(dropdownId) {
+    const dropdown = document.getElementById(dropdownId);
+    if (dropdown) {
+        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    }
+} 

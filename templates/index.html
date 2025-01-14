@@ -48,6 +48,37 @@
             </div>
             <div id="addresses"></div>
         </div>
+
+        <!-- Окно для выбора адресов хранения -->
+        <div class="window">
+            <h2>Выбор адресов хранения</h2>
+            <div class="button-group">
+                <button onclick="toggleDropdown('rowDropdown')">Ряды (A-ZZ)</button>
+                <button onclick="toggleDropdown('columnDropdown')">Колонны (1-99)</button>
+                <button onclick="toggleDropdown('cellDropdown')">Ячейки (1-99)</button>
+                <button onclick="toggleDropdown('placeDropdown')">Места (1-99)</button>
+            </div>
+
+            <!-- Выпадающие списки -->
+            <div id="rowDropdown" class="dropdown">
+                <!-- Ряды A-ZZ будут добавлены сюда -->
+            </div>
+            <div id="columnDropdown" class="dropdown">
+                <!-- Колонны 1-99 будут добавлены сюда -->
+            </div>
+            <div id="cellDropdown" class="dropdown">
+                <!-- Ячейки 1-99 будут добавлены сюда -->
+            </div>
+            <div id="placeDropdown" class="dropdown">
+                <!-- Места 1-99 будут добавлены сюда -->
+            </div>
+
+            <!-- Выбранные адреса -->
+            <div id="selectedAddresses">
+                <h3>Выбранные адреса:</h3>
+                <div id="selectedList"></div>
+            </div>
+        </div>
     </div>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
