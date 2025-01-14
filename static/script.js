@@ -260,22 +260,25 @@ function addAddressRange() {
     dropdowns.forEach(dropdown => {
         const selectedItems = dropdown.querySelectorAll('span.selected');
         if (selectedItems.length > 0) {
-            const category = dropdown.id.replace('RangeDropdown', ''); // Получаем категорию (Ряды, Колонны и т.д.)
             const values = Array.from(selectedItems).map(item => item.textContent);
             if (values.length > 1) {
-                // Если выбрано несколько элементов, формируем диапазон
-                const range = `${values[0]}-${values[values.length - 1]}`;
-                addressParts.push(`${category}: ${range}`);
+                // Формируем диапазон (например, A-C или 1-3)
+                addressParts.push(`${values[0]}-${values[values.length - 1]}`);
             } else {
                 // Если выбран один элемент, добавляем его
-                addressParts.push(`${category}: ${values[0]}`);
+                addressParts.push(values[0]);
             }
+        } else {
+            // Если ничего не выбрано, добавляем пустое значение
+            addressParts.push('');
         }
     });
 
-    // Если диапазон собран (все части выбраны)
-    if (addressParts.length > 0) {
-        const fullRange = addressParts.join(', '); // Формируем полный диапазон
+    // Формируем строку в формате XX-99-99-99
+    const fullRange = addressParts.join('-');
+
+    // Проверяем, чтобы все части были заполнены
+    if (addressParts.every(part => part !== '')) {
         const existingItem = Array.from(selectedList.children).find(el => el.textContent === fullRange);
 
         if (!existingItem) {
@@ -291,7 +294,7 @@ function addAddressRange() {
     });
 
     // Логирование для отладки
-    console.log('Диапазон добавлен:', addressParts.join(', '));
+    console.log('Диапазон добавлен:', fullRange);
 }
 
 // Генерация списков для диапазонов

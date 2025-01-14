@@ -38,6 +38,16 @@
             <div id="cellRangeDropdown" class="dropdown-range"></div>
             <div id="placeRangeDropdown" class="dropdown-range"></div>
 
+            <!-- Контейнер для произвольного диапазона -->
+            <div class="custom-range-container">
+                <h3>Создать произвольный диапазон:</h3>
+                <div class="input-group">
+                    <input type="text" id="customRangeStart" placeholder="Начало (например, P-01-01-01)" />
+                    <input type="text" id="customRangeEnd" placeholder="Конец (например, CD-88-22-66)" />
+                    <button onclick="addCustomRange()">Добавить диапазон</button>
+                </div>
+            </div>
+
             <!-- Выбранные диапазоны адресов -->
             <div id="selectedRangeAddresses">
                 <h3>Выбранные диапазоны:</h3>
