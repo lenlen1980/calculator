@@ -25,19 +25,33 @@
         <!-- Окно для добавления диапазона адресов -->
         <div class="window">
             <h2>Добавить диапазон адресов</h2>
-            <div class="input-group">
-                <input type="text" id="start-row" placeholder="Начальный ряд">
-                <input type="number" id="start-column" placeholder="Начальная колонна">
-                <input type="number" id="start-cell" placeholder="Начальная ячейка">
-                <input type="number" id="start-place" placeholder="Начальное место">
+            <div class="button-group">
+                <button onclick="toggleDropdown('rowRangeDropdown')">Ряды</button>
+                <button onclick="toggleDropdown('columnRangeDropdown')">Колонны</button>
+                <button onclick="toggleDropdown('cellRangeDropdown')">Ячейки</button>
+                <button onclick="toggleDropdown('placeRangeDropdown')">Места</button>
             </div>
-            <div class="input-group">
-                <input type="text" id="end-row" placeholder="Конечный ряд">
-                <input type="number" id="end-column" placeholder="Конечная колонна">
-                <input type="number" id="end-cell" placeholder="Конечная ячейка">
-                <input type="number" id="end-place" placeholder="Конечное место">
+
+            <!-- Выпадающие списки для диапазонов -->
+            <div id="rowRangeDropdown" class="dropdown-range"></div>
+            <div id="columnRangeDropdown" class="dropdown-range"></div>
+            <div id="cellRangeDropdown" class="dropdown-range"></div>
+            <div id="placeRangeDropdown" class="dropdown-range"></div>
+
+            <!-- Контейнеры для чекбоксов -->
+            <div id="rowRangeDropdown-checkboxes" class="checkbox-container"></div>
+            <div id="columnRangeDropdown-checkboxes" class="checkbox-container"></div>
+            <div id="cellRangeDropdown-checkboxes" class="checkbox-container"></div>
+            <div id="placeRangeDropdown-checkboxes" class="checkbox-container"></div>
+
+            <!-- Выбранные диапазоны адресов -->
+            <div id="selectedRangeAddresses">
+                <h3>Выбранные диапазоны:</h3>
+                <div id="selectedRangeList"></div>
             </div>
-            <button onclick="addAddressRange()">Добавить диапазон</button>
+
+            <!-- Кнопка "Добавить диапазон" -->
+            <button class="add-button" onclick="addAddressRange()">Добавить диапазон</button>
         </div>
 
         <!-- Окно для просмотра и фильтрации адресов -->

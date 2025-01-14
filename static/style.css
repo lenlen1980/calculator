@@ -115,11 +115,26 @@ button:hover {
 
 /* Чекбоксы */
 .checkbox-container {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); /* Четыре колонки по умолчанию */
-  grid-auto-flow: row; /* Ячейки перемещаются вниз, а не вправо */
-  gap: 20px;
-  width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.checkbox-container label {
+    display: inline-block;
+    margin: 4px;
+    padding: 8px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #333;
+    cursor: pointer;
+}
+
+.checkbox-container input[type="checkbox"] {
+    margin-right: 8px;
 }
 
 /* Адаптивность */
@@ -241,4 +256,53 @@ button:hover {
     border: 2px solid #ff5722; /* Яркая окантовка */
     border-radius: 5px;
     margin-bottom: 10px;
+}
+
+/* Стили для списка выбранных диапазонов */
+#selectedRangeList {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+#selectedRangeList div {
+    padding: 8px;
+    margin: 4px 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #333;
+}
+
+/* Стили для выпадающих списков диапазонов */
+.dropdown-range {
+    display: none;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.dropdown-range span {
+    display: block;
+    padding: 8px;
+    cursor: pointer;
+    color: #333;
+    transition: background-color 0.2s ease;
+}
+
+.dropdown-range span:hover {
+    background-color: #f0f0f0;
+}
+
+.dropdown-range span.selected {
+    background-color: #ff5722;
+    color: white;
 }

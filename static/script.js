@@ -143,17 +143,66 @@ function toggleDropdown(dropdownId) {
 }
 
 // Обработка выбора элемента
-function handleItemClick(dropdownId, item) {
+function handleItemClick(dropdownId, item, event) {
+    event.stopPropagation(); // Останавливаем всплытие события
     const dropdown = document.getElementById(dropdownId);
     if (dropdown) {
-        const items = dropdown.querySelectorAll('span');
-        items.forEach(el => {
-            if (el === item) {
-                el.classList.toggle('selected'); // Выделяем выбранный элемент
-            } else {
-                el.classList.remove('selected'); // Снимаем выделение с других элементов
-            }
-        });
+        // Добавляем/убираем выделение
+        item.classList.toggle('selected');
+
+        // Закрываем список после выбора
+        dropdown.style.display = 'none';
+
+        // Обновляем текст кнопки
+        updateButtonText(dropdownId);
+    }
+}
+
+// Обновление текста кнопки
+function updateButtonText(dropdownId) {
+    const dropdown = document.getElementById(dropdownId);
+    if (!dropdown) return;
+
+    const button = document.querySelector(`button[onclick="toggleDropdown('${dropdownId}')"]`);
+    if (!button) return;
+
+    const selectedItems = dropdown.querySelectorAll('span.selected');
+    const selectedValues = Array.from(selectedItems).map(item => item.textContent);
+
+    if (selectedValues.length > 0) {
+        // Если выбраны элементы, отображаем их в кнопке
+        button.textContent = `${button.dataset.originalText}: ${selectedValues.join(', ')}`;
+    } else {
+        // Если ничего не выбрано, возвращаем исходный текст
+        button.textContent = button.dataset.originalText;
+    }
+}
+
+// Обновление чекбокса
+function updateCheckbox(dropdownId, value, isSelected) {
+    const checkboxContainer = document.getElementById(`${dropdownId}-checkboxes`);
+    if (!checkboxContainer) return;
+
+    let checkbox = checkboxContainer.querySelector(`input[value="${value}"]`);
+    if (!checkbox && isSelected) {
+        // Создаем новый чекбокс, если его нет
+        checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.value = value;
+        checkbox.id = `${dropdownId}-${value}`;
+        checkbox.checked = true;
+
+        const label = document.createElement('label');
+        label.htmlFor = checkbox.id;
+        label.textContent = value;
+
+        // Добавляем чекбокс в соответствующий контейнер
+        checkboxContainer.appendChild(checkbox);
+        checkboxContainer.appendChild(label);
+    } else if (checkbox && !isSelected) {
+        // Удаляем чекбокс, если выбор снят
+        checkbox.nextElementSibling.remove(); // Удаляем label
+        checkbox.remove(); // Удаляем input
     }
 }
 
@@ -199,4 +248,99 @@ function handleManualInput(type) {
 
     // Обновляем отображение выбранного адреса
     updateSelectedAddresses();
-} 
+}
+
+// Добавление диапазона адресов
+function addAddressRange() {
+    const selectedList = document.getElementById('selectedRangeList');
+    const dropdowns = document.querySelectorAll('.dropdown-range');
+
+    // Собираем выбранные элементы
+    let addressParts = [];
+    dropdowns.forEach(dropdown => {
+        const selectedItems = dropdown.querySelectorAll('span.selected');
+        if (selectedItems.length > 0) {
+            const category = dropdown.id.replace('RangeDropdown', ''); // Получаем категорию (Ряды, Колонны и т.д.)
+            const values = Array.from(selectedItems).map(item => item.textContent);
+            if (values.length > 1) {
+                // Если выбрано несколько элементов, формируем диапазон
+                const range = `${values[0]}-${values[values.length - 1]}`;
+                addressParts.push(`${category}: ${range}`);
+            } else {
+                // Если выбран один элемент, добавляем его
+                addressParts.push(`${category}: ${values[0]}`);
+            }
+        }
+    });
+
+    // Если диапазон собран (все части выбраны)
+    if (addressParts.length > 0) {
+        const fullRange = addressParts.join(', '); // Формируем полный диапазон
+        const existingItem = Array.from(selectedList.children).find(el => el.textContent === fullRange);
+
+        if (!existingItem) {
+            const div = document.createElement('div');
+            div.textContent = fullRange; // Отображаем полный диапазон
+            selectedList.appendChild(div); // Добавляем в список
+        }
+    }
+
+    // Закрываем все выпадающие списки
+    dropdowns.forEach(dropdown => {
+        dropdown.style.display = 'none';
+    });
+
+    // Логирование для отладки
+    console.log('Диапазон добавлен:', addressParts.join(', '));
+}
+
+// Генерация списков для диапазонов
+function generateDropdownItems() {
+    // Генерация рядов от A до ZZ
+    const rowDropdown = document.getElementById('rowRangeDropdown');
+    if (rowDropdown) {
+        rowDropdown.innerHTML = ''; // Очищаем список
+        for (let i = 65; i <= 90; i++) { // A-Z
+            const letter = String.fromCharCode(i);
+            const span = document.createElement('span');
+            span.textContent = letter;
+            span.onclick = (event) => handleItemClick('rowRangeDropdown', span, event);
+            rowDropdown.appendChild(span);
+        }
+        for (let i = 65; i <= 90; i++) { // AA-ZZ
+            for (let j = 65; j <= 90; j++) {
+                const letters = String.fromCharCode(i) + String.fromCharCode(j);
+                const span = document.createElement('span');
+                span.textContent = letters;
+                span.onclick = (event) => handleItemClick('rowRangeDropdown', span, event);
+                rowDropdown.appendChild(span);
+            }
+        }
+    }
+
+    // Генерация колонн, ячеек и мест от 1 до 99
+    const numberDropdowns = ['columnRangeDropdown', 'cellRangeDropdown', 'placeRangeDropdown'];
+    numberDropdowns.forEach(id => {
+        const dropdown = document.getElementById(id);
+        if (dropdown) {
+            dropdown.innerHTML = ''; // Очищаем список
+            for (let i = 1; i <= 99; i++) {
+                const span = document.createElement('span');
+                span.textContent = i;
+                span.onclick = (event) => handleItemClick(id, span, event);
+                dropdown.appendChild(span);
+            }
+        }
+    });
+}
+
+// Инициализация кнопок при загрузке страницы
+window.onload = function() {
+    generateDropdownItems(); // Генерация списков
+
+    // Сохраняем исходные тексты кнопок
+    const buttons = document.querySelectorAll('.button-group button');
+    buttons.forEach(button => {
+        button.dataset.originalText = button.textContent;
+    });
+}; 
