@@ -346,4 +346,41 @@ window.onload = function() {
     buttons.forEach(button => {
         button.dataset.originalText = button.textContent;
     });
-}; 
+};
+
+// Добавление произвольного диапазона
+function addCustomRange() {
+    const startInput = document.getElementById('customRangeStart');
+    const endInput = document.getElementById('customRangeEnd');
+    const selectedList = document.getElementById('selectedRangeList');
+
+    const startValue = startInput.value.trim().toUpperCase();
+    const endValue = endInput.value.trim().toUpperCase();
+
+    // Проверка формата ввода
+    if (!isValidRangeFormat(startValue) || !isValidRangeFormat(endValue)) {
+        alert('Некорректный формат диапазона. Используйте формат XX-99-99-99.');
+        return;
+    }
+
+    // Формируем строку диапазона
+    const rangeString = `${startValue} - ${endValue}`;
+
+    // Проверяем, чтобы диапазон не был уже добавлен
+    const existingItem = Array.from(selectedList.children).find(el => el.textContent === rangeString);
+    if (!existingItem) {
+        const div = document.createElement('div');
+        div.textContent = rangeString; // Отображаем диапазон
+        selectedList.appendChild(div); // Добавляем в список
+    }
+
+    // Очищаем поля ввода
+    startInput.value = '';
+    endInput.value = '';
+}
+
+// Проверка формата диапазона
+function isValidRangeFormat(value) {
+    const regex = /^[A-Z]{1,2}-\d{2}-\d{2}-\d{2}$/;
+    return regex.test(value);
+} 
