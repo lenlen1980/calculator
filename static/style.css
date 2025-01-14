@@ -176,6 +176,7 @@ button:hover {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    min-width: 120px; /* Фиксированная ширина для кнопок */
 }
 
 .button-group button:hover {

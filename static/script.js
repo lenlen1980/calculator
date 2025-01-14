@@ -43,26 +43,51 @@ function initDropdown(dropdownId, items, type) {
     `).join('');
 }
 
-// Обработка выбора
+// Обработка выбора чекбокса
 function handleSelection(checkbox, type) {
     const value = checkbox.value;
 
+    // Сброс предыдущего выбора для текущего типа
+    const dropdown = checkbox.closest('.dropdown');
+    if (dropdown) {
+        const checkboxes = dropdown.querySelectorAll('.dropdown-checkbox');
+        checkboxes.forEach(cb => {
+            if (cb !== checkbox) {
+                cb.checked = false; // Снимаем выбор с других чекбоксов
+            }
+        });
+    }
+
+    // Запоминаем выбранное значение
     switch (type) {
         case 'row':
             selectedRow = checkbox.checked ? value : null;
+            updateButtonText('rowDropdown', selectedRow, 'Ряды');
             break;
         case 'column':
             selectedColumn = checkbox.checked ? value : null;
+            updateButtonText('columnDropdown', selectedColumn, 'Колонны');
             break;
         case 'cell':
             selectedCell = checkbox.checked ? value : null;
+            updateButtonText('cellDropdown', selectedCell, 'Ячейки');
             break;
         case 'place':
             selectedPlace = checkbox.checked ? value : null;
+            updateButtonText('placeDropdown', selectedPlace, 'Места');
             break;
     }
 
+    // Обновляем отображение выбранного адреса
     updateSelectedAddresses();
+}
+
+// Обновление текста кнопки
+function updateButtonText(dropdownId, selectedValue, defaultText) {
+    const button = document.querySelector(`button[onclick="toggleDropdown('${dropdownId}')"]`);
+    if (button) {
+        button.textContent = selectedValue ? `${defaultText} (${selectedValue})` : `${defaultText}`;
+    }
 }
 
 // Обновление выбранных адресов
